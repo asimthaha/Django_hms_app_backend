@@ -24,3 +24,20 @@ class UserRegistration(models.Model):
     def __str__(self):
         """Unicode representation of UserRegistration."""
         pass
+
+
+class BookDoctorModel(models.Model):
+
+    time = models.TimeField()
+    date= models.DateField()
+    
+
+    class Meta:
+        verbose_name = ("BookDoctorModel")
+        verbose_name_plural = ("BookDoctorModels")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("BookDoctorModel_detail", kwargs={"pk": self.pk})

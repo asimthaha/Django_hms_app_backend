@@ -27,3 +27,15 @@ def loginView(request):
         loginData = UserRegistration.objects.filter(Q(email__exact=getEmail) & Q(password__exact = getPassword)).values()
         loginData = list(loginData)
         return HttpResponse(json.dumps(loginData))
+    
+
+def appointDoctorView(request):
+    if request.method=="POST":
+        data = json.loads(request.body)
+        print(data)
+        serializer_data = DoctorAppoinmentSerilaizer(data=data)
+        if serializer_data.is_valid():
+            serializer_data.save()
+            return HttpResponse(json.dumps({"status":"Appoinment Successful"}))
+        else:
+            return HttpResponse(json.dumps({"status":"Appoinment Unsuccessful"}))

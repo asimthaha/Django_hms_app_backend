@@ -7,3 +7,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields=(
             'userid','name','email','password','phone','address'
         )
+        
+        
+class DoctorAppoinmentSerilaizer(serializers.ModelSerializer):
+    class Meta:
+        model = BookDoctorModel
+        fields = ('time','date')
