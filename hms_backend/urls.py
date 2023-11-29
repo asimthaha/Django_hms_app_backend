@@ -19,5 +19,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user_app.urls')),
+<<<<<<< HEAD
     path('staff/', include('staff_app.urls')),
+=======
+    path('staff/', include('staff_app.urls'))
+>>>>>>> 1b8a883 (pulling user_app)
 ]
