@@ -9,7 +9,7 @@ class UserRegistration(models.Model):
     name=models.CharField(default="",max_length=100)
     email=models.EmailField(default="",max_length=254)
     password=models.CharField(default="",max_length=100)
-    phone=models.IntegerField(null=True)
+    phone=models.BigIntegerField(null=True)
     address=models.CharField(default="",max_length=400)
     
 

@@ -11,8 +11,8 @@ from django.db.models import Q
 def registerView(request):
     if request.method=="POST":
         data = json.loads(request.body)
-        print(data)
         serializer_data = UserRegistrationSerializer(data=data)
+        print(serializer_data)
         if serializer_data.is_valid():
             serializer_data.save()
             return HttpResponse(json.dumps({"status":"User data Addded Successfully"}))
