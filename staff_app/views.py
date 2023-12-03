@@ -25,3 +25,12 @@ def displayDoctorView(request):
         data = DoctorRegistrationModel.objects.filter(Q(doctorid__exact=getId)).values()
         data = list(data)
         return HttpResponse(json.dumps(data))
+    
+@csrf_exempt
+def searchDoctorView(request):
+    if request.method == "POST":
+        recieved_data = json.loads(request.body)
+        getSpecilality = recieved_data['speciality']
+        data = DoctorRegistrationModel.objects.filter(Q(speciality__icontains=getSpecilality)).values()
+        searchData= list(data)
+        return HttpResponse(json.dumps(searchData))

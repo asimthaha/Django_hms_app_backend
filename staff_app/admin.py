@@ -6,7 +6,7 @@ from .models import *
 
 # Register your models here.
 @admin.register(DoctorRegistrationModel)
-class TaxDetailsChartModel(admin.ModelAdmin):
+class DoctorRegistrationModelAdmin(admin.ModelAdmin):
     list_display = ('doctorid', 'name', 'username', 'speciality', 'startYear', 'password', 'qualification')
     list_filter = ('name', 'username', 'speciality', 'qualification')
     search_fields = ('name', 'username', 'speciality', 'qualification', 'startYear')

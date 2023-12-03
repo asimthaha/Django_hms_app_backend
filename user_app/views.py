@@ -73,12 +73,3 @@ def appointDoctorView(request):
             return HttpResponse(json.dumps({"status":"Appoinment Successful"}))
         else:
             return HttpResponse(json.dumps({"status":"Appoinment Unsuccessful"}))
-
-@csrf_exempt
-def searchDoctorView(request):
-    if request.method == "POST":
-        recieved_data = json.loads(request.body)
-        getSpecilality = recieved_data['speciality']
-        data = DoctorModel.objects.filter(Q(speciality__icontains=getSpecilality)).values()
-        searchData= list(data)
-        return HttpResponse(json.dumps(searchData))

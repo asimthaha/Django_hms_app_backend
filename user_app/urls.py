@@ -9,6 +9,5 @@ urlpatterns = [
     path('updateUserData',views.updateUserDataView, name="updateUserData"),
     path('bmiCalc/', views.bmiCalculatorView, name='bmiCalc'),
     path('bookDoctor/', views.appointDoctorView, name='bookDoctor'),
-    path('searchDoctor/', views.searchDoctorView, name='searchDoctor'),
     
 ]
