@@ -19,12 +19,10 @@ def LoginView(request):
     
 @csrf_exempt
 def displayDoctorView(request):
-    if request.method =="POST":
-        data= json.loads(request.body)
-        getId = data['doctorid']
-        data = DoctorRegistrationModel.objects.filter(Q(doctorid__exact=getId)).values()
-        data = list(data)
-        return HttpResponse(json.dumps(data))
+    if request.method == "POST":
+        data = DoctorRegistrationModel.objects.all()
+        serializer_data = DoctorSerializer(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
     
 @csrf_exempt
 def searchDoctorView(request):

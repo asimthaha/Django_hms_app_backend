@@ -38,3 +38,4 @@ class DoctorRegistrationModel(models.Model):
 
     def get_absolute_url(self):
         return reverse("DoctorRegistrationModel_detail", kwargs={"pk": self.pk})
+
