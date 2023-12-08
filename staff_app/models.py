@@ -17,6 +17,7 @@ class DoctorRegistrationModel(models.Model):
 
     doctorid= models.AutoField(primary_key=True)
     name=models.CharField(default="",max_length=100)
+    photo = models.ImageField(upload_to="photo", blank=True, null=True)
     username=models.CharField(default="", max_length=30)
     speciality=models.CharField(default="",
         max_length=100,
