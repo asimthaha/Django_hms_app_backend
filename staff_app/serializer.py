@@ -4,6 +4,8 @@ from .models import *
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorRegistrationModel
-        fields=(
-            'doctorid','name','username','speciality','startYear','qualification','role','password'
-        )
+        # fields=(
+        #     'doctorid','photo','name','username','speciality','startYear','qualification','role','password'
+        # )
+        
+        fields = '__all__'

@@ -8,6 +8,7 @@ from django.db.models import Q
 import joblib
 import os
 import numpy as np
+from rest_framework.views import APIView
 
 # Create your views here.
 @csrf_exempt
@@ -92,74 +93,23 @@ def predictHeartView(request):
     prediction = None
 
     if request.method == 'POST':
-        recieved_data = json.loads(request.body)
+        data = json.loads(request.body)
         
-        sex=recieved_data['sex']
-        if sex== "Male":
-            sex=1
-        elif sex=="Female":
-            sex=0
-        
-        cp=recieved_data['cp']
-        if cp == "No Pain":
-            cp=4
-        elif cp == "Unusual Chest Pain":
-            cp=3
-        elif cp == "Non-Heart related Chest Pain":
-            cp=2
-        elif cp == "Typical Chest Pain":
-            cp=1
-            
-        restECG=recieved_data['restecg']
-        if restECG == "Left Chamber of the Heart has Thickened Walls":
-            restECG = 1
-        elif restECG == "Abnormality in Heart's Electrical Signals":
-            restECG =2
-        elif restECG == "No Significant Abnormalities Detected":
-            restECG = 0
-        
-        slope=recieved_data['slope']
-        if slope == "It Goes Down (Like a Hill)":
-            slope=1
-        elif slope == "It Stays Flat (Like Level Ground)":
-            slope=2
-        elif slope == "It Goes Up (Like an Incline)":
-            slope =3
-            
-        thal = recieved_data['thal']
-        if thal == "Normal Blood Flow" or "NULL":
-            thal=3
-        elif thal == "No Blood Flow in Some Part of the Heart (Fixed Defect)":
-            thal=6
-        elif thal == "Abnormal Blood Flow that Can Be Reversed (Reversible Defect)":
-            thal=7
-        
-        exang =recieved_data['exang']
-        if exang == "Yes":
-            exang=1
-        elif exang == "No":
-            exang=0
-            
-        fbs = recieved_data['fbs']
-        if fbs == "True":
-            fbs=1
-        elif fbs == "False":
-            fbs = 0
         
         input_features = [
-            float(recieved_data.get('age')),
-            sex,
-            cp,
-            float(recieved_data.get('trestbps')),
-            float(recieved_data.get('chol')),
-            fbs,
-            restECG,
-            float(recieved_data.get('thalach')),
-            exang,
-            float(recieved_data.get('oldpeak')),
-            slope,
-            float(recieved_data.get('ca')),
-            thal
+            float(data.get('age')),
+            float(data.get('sex')),
+            float(data.get('cp')),
+            float(data.get('trestbps')),
+            float(data.get('chol')),
+            float(data.get('fbs')),
+            float(data.get('restecg')),
+            float(data.get('thalach')),
+            float(data.get('exang')),
+            float(data.get('oldpeak')),
+            float(data.get('slope')),
+            float(data.get('ca')),
+            float(data.get('thal'))
         ]
 
         # Convert input_features to a NumPy array and reshape it
@@ -172,6 +122,7 @@ def predictHeartView(request):
 
         # Tips and links
         tips_category = 'management_tips' if prediction[0] == 0 else 'prevention_tips'
+        links_category = 'heart_disease_management' if prediction[0]==0 else 'heart_disease_prevention'
 
         tips = {
             "management_tips": [
@@ -192,12 +143,12 @@ def predictHeartView(request):
         }
 
         youtube_links = {
-            "heart_disease_management": "https://www.youtube.com/watch?v=IMBpwpf5crU",
-            "heart_disease_prevention": "https://www.youtube.com/watch?v=B6UYNZLpAMs"
+            "heart_disease_management": "https://www.youtube.com/watch?v=E0Am_KGBdUg",
+            "heart_disease_prevention": "https://www.youtube.com/watch?v=_ePLBIDlChA"
         }
 
         return HttpResponse(json.dumps({
             'result': result,
             'tips': tips[tips_category],
-            'youtube_links': youtube_links
+            'youtube_links': youtube_links[links_category]
         }))
