@@ -26,7 +26,7 @@ def LoginView(request):
 @csrf_exempt
 def displayDoctorView(request):
     if request.method == "POST":
-        data = DoctorRegistrationModel.objects.all()
+        data = DoctorRegistrationModel.objects.filter(role="Doctor").all()
         serializer_data = DoctorSerializer(data, many=True)
         return HttpResponse(json.dumps(serializer_data.data))
 

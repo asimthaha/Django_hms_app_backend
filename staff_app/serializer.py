@@ -5,7 +5,7 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorRegistrationModel
         # fields=(
-        #     'doctorid','photo','name','username','speciality','startYear','qualification','role','password'
+        #     'satffid','photo','name','username','speciality','startYear','qualification','role','password'
         # )
         
         fields = '__all__'

@@ -3,13 +3,13 @@ from .models import *
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserRegistration
+        model = UserRegistrationModel
         fields=(
-            'userid','name','email','password','phone','address',
+            'userid','name','email','password','phone'
         )
         
         
 class DoctorAppoinmentSerilaizer(serializers.ModelSerializer):
     class Meta:
         model = BookDoctorModel
-        fields = ('time','date')
+        fields = '__all__'

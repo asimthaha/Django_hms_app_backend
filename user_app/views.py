@@ -19,7 +19,7 @@ def registerView(request):
         print(serializer_data)
         if serializer_data.is_valid():
             serializer_data.save()
-            return HttpResponse(json.dumps({"status":"User data Addded Successfully"}))
+            return HttpResponse(json.dumps({"status":"User data Added Successfully"}))
         else:
             return HttpResponse(json.dumps({"status":"User data - Unsuccessful"}))
 
@@ -79,8 +79,8 @@ def bmiCalculatorView(request):
 def appointDoctorView(request):
     if request.method=="POST":
         data = json.loads(request.body)
-        print(data)
         serializer_data = DoctorAppoinmentSerilaizer(data=data)
+        print(serializer_data)
         if serializer_data.is_valid():
             serializer_data.save()
             return HttpResponse(json.dumps({"status":"Appoinment Successful"}))

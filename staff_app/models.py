@@ -1,5 +1,6 @@
 
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class DoctorRegistrationModel(models.Model):
@@ -12,23 +13,31 @@ class DoctorRegistrationModel(models.Model):
         ("ENT specialist", "ENT specialist"),
         ("Nephrologist", "Nephrologist"),
         ("Cardiologist", "Cardiologist"),
-        ("Oncologist", "Oncologist"),
     )
 
-    doctorid= models.AutoField(primary_key=True)
-    name=models.CharField(default="",max_length=100)
+    staffid= models.AutoField(primary_key=True)
+    name=models.CharField(default="",max_length=100, db_index=True)
     photo = models.ImageField(upload_to="photo", blank=True, null=True)
     username=models.CharField(default="", max_length=30)
-    speciality=models.CharField(default="",
+    speciality=models.CharField(default="Cardiologist",
         max_length=100,
         blank=True, 
         null=True,
-        choices=SPECIALITY,
-        help_text="Speciality")
+        choices=SPECIALITY)
     startYear=models.IntegerField(null=True)
     password=models.CharField(max_length=50, default="")
-    qualification=models.CharField(default="",max_length=100)
-    role=models.CharField(default="", max_length=100)
+    qualification=models.CharField(default="",max_length=100, db_index=True)
+    
+    ROLE = (
+        ("Doctor", "Doctor"),
+        ("Pharmacist", "Pharmacist"),
+        ("LabAssistant", "LabAssistant"),
+    )
+    role=models.CharField(default="",
+                          blank=True,
+                          null=True,
+                          choices=ROLE,
+                          max_length=100)
 
     class Meta:
         verbose_name = ("DoctorRegistrationModel")
@@ -39,4 +48,3 @@ class DoctorRegistrationModel(models.Model):
 
     def get_absolute_url(self):
         return reverse("DoctorRegistrationModel_detail", kwargs={"pk": self.pk})
-
