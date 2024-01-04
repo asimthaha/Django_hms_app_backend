@@ -7,7 +7,8 @@ urlpatterns = [
     # path('logout',views.logout_view),
     path('displayUserData', views.displayUserDataView, name="displayUserData"),
     path('updateUserData', views.updateUserDataView, name="updateUserData"),
-    path('bmiCalc/', views.bmiCalculatorView, name='bmiCalc'),
-    path('bookDoctor/', views.appointDoctorView, name='bookDoctor'),
+    path('bmiCalc/', views.bmiCalculatorView, name='bmiCalc'), 
     path('predictHeart/', views.predictHeartView, name='predictHeart'),
+    path('bookDoctor/', views.appointDoctorView, name='bookDoctor'),
+    path('displayBooking/', views.displayDoctorBookingView, name='displayBooking'),
 ]

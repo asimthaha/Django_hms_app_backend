@@ -30,7 +30,7 @@ def loginView(request):
         print(data)
         getEmail = data['email']
         getPassword = data['password']
-        loginData = UserRegistration.objects.filter(Q(email__exact=getEmail) & Q(password__exact = getPassword)).values()
+        loginData = UserRegistrationModel.objects.filter(Q(email__exact=getEmail) & Q(password__exact = getPassword)).values()
         loginData = list(loginData)
         return HttpResponse(json.dumps(loginData))
     
@@ -152,3 +152,11 @@ def predictHeartView(request):
             'tips': tips[tips_category],
             'youtube_links': youtube_links[links_category]
         }))
+
+
+@csrf_exempt
+def displayDoctorBookingView(request):
+    if request.method == "GET":
+        data = BookDoctorModel.objects.all()
+        data = DoctorAppoinmentSerilaizer(data, many=True)
+        return HttpResponse(json.dumps(data.data))

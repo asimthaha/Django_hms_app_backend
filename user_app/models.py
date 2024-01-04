@@ -74,4 +74,52 @@ class ResultsModel(models.Model):
         verbose_name_plural = ("ResultsModels")
     def __str__(self):
         return f'{self.resultid} - {self.doctorid} - {self.testDate} - {self.userid}'
-        
+
+
+class MedicinesModel(models.Model):
+
+    medicineid = models.AutoField(primary_key=True)
+    userid = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
+    doctorid=models.ForeignKey(DoctorRegistrationModel, on_delete=models.CASCADE)
+    inferences = models.CharField(max_length=200, default="", blank=True, null=True)
+
+    med1 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times1 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days1 = models.CharField(max_length=20, default="", blank=True, null=True)
+    med2 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times2 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days2 = models.CharField(max_length=20, default="", blank=True, null=True)
+
+    med3 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times3 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days3 = models.CharField(max_length=20, default="", blank=True, null=True)
+    med4 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times4 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days4 = models.CharField(max_length=20, default="", blank=True, null=True)
+
+    med5 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times5 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days5 = models.CharField(max_length=20, default="", blank=True, null=True)
+    med6 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times6 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days6 = models.CharField(max_length=20, default="", blank=True, null=True)
+
+    med7 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times7 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days7 = models.CharField(max_length=20, default="", blank=True, null=True)
+    med8 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times8 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days8 = models.CharField(max_length=20, default="", blank=True, null=True)
+
+    med9 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times9 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days9 = models.CharField(max_length=20, default="", blank=True, null=True)
+    med10 = models.CharField(max_length=50, default="", blank=True, null=True)
+    times10 = models.CharField(max_length=20, default="", blank=True, null=True)
+    days10 = models.CharField(max_length=20, default="", blank=True, null=True)
+
+    class Meta:
+        """Meta definition for MedicinesModel."""
+
+        verbose_name = 'MedicinesModel'
+        verbose_name_plural = 'MedicinesModels'

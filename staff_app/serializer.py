@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import *
+from user_app.models import *
+from staff_app.models import *
 
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,3 +10,9 @@ class DoctorSerializer(serializers.ModelSerializer):
         # )
         
         fields = '__all__'
+        
+        
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookDoctorModel
+        fields='__all__'

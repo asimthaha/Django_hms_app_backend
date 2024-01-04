@@ -10,6 +10,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         
         
 class DoctorAppoinmentSerilaizer(serializers.ModelSerializer):
+    user = UserRegistrationSerializer(source='userid', read_only=True)
     class Meta:
         model = BookDoctorModel
         fields = '__all__'
+ 
