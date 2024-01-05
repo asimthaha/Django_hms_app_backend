@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.http import HttpResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -45,20 +46,23 @@ def search_patient_view(request):
     if request.method == "POST":
         received_data = json.loads(request.body)
         getName = received_data['name']
-        data = UserRegistrationModel.objects.filter(Q(name__icontains=getName)).values()
-        searchPatientData = list(data)
-        return HttpResponse(json.dumps(searchPatientData))
+        data = UserRegistrationModel.objects.filter(Q(name__icontains=getName)).prefetch_related('results', 'medicines', 'bookings').all()
+        
+        # Serialize the data including related fields
+        serializer_data = searchPatientDataSerializer(data, many=True)
+        
+        # Return JsonResponse with serialized data
+        return JsonResponse(serializer_data.data, safe=False)
 
 
 @csrf_exempt
 def appoinment_view(request):
     if request.method == "POST":
         received_data = json.loads(request.body)
-        get_doctor_id = received_data['doctorid']
+        get_doctor_id = received_data["doctorid"]
         data = BookDoctorModel.objects.filter(Q(doctorid__exact=get_doctor_id)).all()
-        serilized_data = BookingSerializer(data, many=True)
-        return HttpResponse(json.dumps(serilized_data.data))
-        
+        serializer_data = BookingSerializer(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
 
 @csrf_exempt
 def appoinment_decline_view(request):

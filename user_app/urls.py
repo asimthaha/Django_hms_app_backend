@@ -10,5 +10,4 @@ urlpatterns = [
     path('bmiCalc/', views.bmiCalculatorView, name='bmiCalc'), 
     path('predictHeart/', views.predictHeartView, name='predictHeart'),
     path('bookDoctor/', views.appointDoctorView, name='bookDoctor'),
-    path('displayBooking/', views.displayDoctorBookingView, name='displayBooking'),
 ]

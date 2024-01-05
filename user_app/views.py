@@ -152,11 +152,3 @@ def predictHeartView(request):
             'tips': tips[tips_category],
             'youtube_links': youtube_links[links_category]
         }))
-
-
-@csrf_exempt
-def displayDoctorBookingView(request):
-    if request.method == "GET":
-        data = BookDoctorModel.objects.all()
-        data = DoctorAppoinmentSerilaizer(data, many=True)
-        return HttpResponse(json.dumps(data.data))
