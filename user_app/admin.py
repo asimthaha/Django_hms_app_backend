@@ -22,41 +22,20 @@ class ResultsModelAdmin(admin.ModelAdmin):
 
 @admin.register(MedicinesModel)
 class MedicinesModelAdmin(admin.ModelAdmin):
-    list_display = ("medicineid", "userid", "doctorid", "inferences", 'date')
+    list_display = ("medicineid", "userid", "doctorid", "inferences", 'date', 'medicines_data')
     list_filter = ("medicineid", "userid", "doctorid")
 
     fieldsets = (
         (None, {
             'fields': ('userid', 'doctorid', 'inferences', 'date')
         }),
-        ('Medicines 1', {
-            'fields': ('med1', 'times1', 'days1')
+        ('Medicines', {
+            'fields': ('medicines_data',)
         }),
-        ('Medicines 2', {
-            'fields': ('med2', 'times2', 'days2')
-        }),
-        # ('Medicines 3', {
-        #     'fields': ('med3', 'times3', 'days3')
-        # }),
-        # ('Medicines 4', {
-        #     'fields': ('med4', 'times4', 'days4')
-        # }),
-        # ('Medicines 5', {
-        #     'fields': ('med5', 'times5', 'days5')
-        # }),
-        # ('Medicines 6', {
-        #     'fields': ('med6', 'times6', 'days6')
-        # }),
-        # ('Medicines 7', {
-        #     'fields': ('med7', 'times7', 'days7')
-        # }),
-        # ('Medicines 8', {
-        #     'fields': ('med8', 'times8', 'days8')
-        # }),
-        # ('Medicines 9', {
-        #     'fields': ('med9', 'times9', 'days9')
-        # }),
-        # ('Medicines 10', {
-        #     'fields': ('med10', 'times10', 'days10')
-        # }),
+
     )
+
+@admin.register(TransactionModel)
+class TransactionModelAdmin(admin.ModelAdmin):
+    list_display = ("transaction_id","payment_id", "order_id", "signature", "amount", 'created_at')
+    list_filter = ("amount", "payment_id", "created_at")

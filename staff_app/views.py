@@ -47,13 +47,8 @@ def search_patient_view(request):
         received_data = json.loads(request.body)
         getName = received_data['name']
         data = UserRegistrationModel.objects.filter(Q(name__icontains=getName)).prefetch_related('results', 'medicines', 'bookings').all()
-        
-        # Serialize the data including related fields
         serializer_data = searchPatientDataSerializer(data, many=True)
-        
-        # Return JsonResponse with serialized data
         return JsonResponse(serializer_data.data, safe=False)
-
 
 @csrf_exempt
 def appoinment_view(request):
@@ -76,3 +71,23 @@ def appoinment_decline_view(request):
                 return HttpResponse(json.dumps({"status":"User not Found"}))  
             data.delete()
             return HttpResponse(json.dumps({"status":" Appoinment Deleted Successfully"}))
+        
+
+@csrf_exempt
+def add_medicine_view(request):
+    if request.method=="POST":
+        data = json.loads(request.body)
+        serializer_data = MedicineSerializer(data=data)
+        print(serializer_data)
+        if serializer_data.is_valid():
+            serializer_data.save()
+            return HttpResponse(json.dumps({"status":"Medicine data Added Successfully"}))
+        else:
+            return HttpResponse(json.dumps({"status":"Medicine data - Unsuccessful"}))
+        
+@csrf_exempt
+def view_medicine_pharamacist_view(request):
+    if request.method=="POST":
+        data = MedicinesModel.objects.all()
+        serializer_data = MedicineSerializerForViewing(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))

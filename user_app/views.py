@@ -1,18 +1,20 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from user_app.models import *
 from user_app.serializer import *
 from django.db.models import Q
 import joblib
-import os
 import numpy as np
-from rest_framework.views import APIView
+from .main import RazorpayClient
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.serializers import ValidationError
 
 # Create your views here.
 @csrf_exempt
-def registerView(request):
+def register_view(request):
     if request.method=="POST":
         data = json.loads(request.body)
         serializer_data = UserRegistrationSerializer(data=data)
@@ -24,7 +26,7 @@ def registerView(request):
             return HttpResponse(json.dumps({"status":"User data - Unsuccessful"}))
 
 @csrf_exempt
-def loginView(request):
+def login_view(request):
     if request.method=="POST":
         data=json.loads(request.body)
         print(data)
@@ -35,30 +37,30 @@ def loginView(request):
         return HttpResponse(json.dumps(loginData))
     
 @csrf_exempt
-def displayUserDataView(request):
+def display_userdata_view(request):
     if request.method =="POST":
-        recieved_data = json.loads(request.body)
-        getUserid = recieved_data["userid"]
-        data = UserRegistration.objects.filter(Q(userid__exact=getUserid)).values()
+        received_data = json.loads(request.body)
+        getUserid = received_data["userid"]
+        data = UserRegistrationModel.objects.filter(Q(userid__exact=getUserid)).values()
         data = list(data)
         return HttpResponse(json.dumps(data))
     
 @csrf_exempt
-def updateUserDataView(request):
+def update_userdata_view(request):
     if request.method == "PUT":      
-        recieved_data = json.loads(request.body)
-        getUserid = recieved_data["userid"]
-        getName = recieved_data["name"]
-        getEmail = recieved_data["email"]
-        getPhone = recieved_data["phone"]
-        getPassword = recieved_data["password"]
-        getAddress = recieved_data["address"]
-        data = UserRegistration.objects.filter(Q(userid__exact=getUserid))
+        received_data = json.loads(request.body)
+        getUserid = received_data["userid"]
+        getName = received_data["name"]
+        getEmail = received_data["email"]
+        getPhone = received_data["phone"]
+        getPassword = received_data["password"]
+        getAddress = received_data["address"]
+        data = UserRegistrationModel.objects.filter(Q(userid__exact=getUserid))
         data.update(name=getName,email= getEmail,phone=getPhone,password= getPassword, address=getAddress)
         return HttpResponse(json.dumps({"status":"Data Updated Successfully"}))
 
 @csrf_exempt        
-def bmiCalculatorView(request):
+def bmi_calculator_view(request):
     if request.method == "POST":
         data = json.loads(request.body)
         getWeight = int(data["weight"])
@@ -76,7 +78,7 @@ def bmiCalculatorView(request):
         return HttpResponse(json.dumps({"result":bmi, "status":status}))
     
 @csrf_exempt
-def appointDoctorView(request):
+def appoint_doctor_view(request):
     if request.method=="POST":
         data = json.loads(request.body)
         serializer_data = DoctorAppoinmentSerilaizer(data=data)
@@ -88,7 +90,7 @@ def appointDoctorView(request):
             return HttpResponse(json.dumps({"status":"Appoinment Unsuccessful"}))
         
 @csrf_exempt
-def predictHeartView(request):
+def predict_heart_view(request):
     model = joblib.load("E:\\STUDY\\hms_backend\\user_app\\model.joblib")  # Load your saved model
     prediction = None
 
@@ -152,3 +154,78 @@ def predictHeartView(request):
             'tips': tips[tips_category],
             'youtube_links': youtube_links[links_category]
         }))
+    
+@csrf_exempt
+def disable_appoinments_View(request):
+    if request.method == "POST":
+        received_data = json.loads(request.body)
+        getDate = received_data['date']
+        data = BookDoctorModel.objects.filter(Q(date__exact=getDate)).all()
+        serialized_data = DisableBookingsSerializer(data, many=True)
+        return HttpResponse(json.dumps(serialized_data.data))
+    
+
+rz_client = RazorpayClient()
+
+@csrf_exempt
+def initiate_payment(request):
+    if request.method == 'POST':
+        try:
+            # Deserialize and validate the incoming data using the RazorpayOrderSerializer
+            data = json.loads(request.body)
+            razorpay_order_serializer = RazorpayOrderSerializer(data=data)
+            razorpay_order_serializer.is_valid(raise_exception=True)
+
+            # Get validated data
+            validated_data = razorpay_order_serializer.validated_data
+
+            amount = validated_data.get('amount', 0)
+
+            order_response = rz_client.create_order(
+                amount=amount,
+                currency=validated_data.get("currency")
+            )
+
+            response = {
+                "status_code": status.HTTP_201_CREATED,
+                "message": "order created",
+                "data": order_response
+            }
+
+            return JsonResponse(response)
+
+        except ValidationError as ve:
+            # Handle validation errors by returning them in the response
+            response_data = {'error': ve.detail}
+            return JsonResponse(response_data, status=400)
+
+        except Exception as e:
+            # Handle other exceptions by returning an error message
+            response_data = {'error': str(e)}
+            return JsonResponse(response_data, status=500)
+
+
+@csrf_exempt
+def capture_payment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        transaction_serializer = TranscationModelSerializer(data=data)
+        if transaction_serializer.is_valid():
+            rz_client.verify_payment_signature(
+                razorpay_payment_id = transaction_serializer.validated_data.get("payment_id"),
+                razorpay_order_id = transaction_serializer.validated_data.get("order_id"),
+                razorpay_signature = transaction_serializer.validated_data.get("signature")
+            )
+            transaction_serializer.save()
+            response = {
+                "status_code": status.HTTP_201_CREATED,
+                "message": "transaction created"
+            }
+            return Response(response, status=status.HTTP_201_CREATED)
+        else:
+            response = {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": "bad request",
+                "error": transaction_serializer.errors
+            }
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)

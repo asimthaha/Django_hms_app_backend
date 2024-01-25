@@ -1,6 +1,7 @@
 from django.db import models
 from staff_app.models import DoctorRegistrationModel
 import datetime
+from django.db.models import JSONField
 
 # Create your models here.
 class UserRegistrationModel(models.Model):
@@ -83,38 +84,8 @@ class MedicinesModel(models.Model):
     doctorid=models.ForeignKey(DoctorRegistrationModel, on_delete=models.CASCADE)
     inferences = models.CharField(max_length=200, default="", blank=True, null=True)
     date = models.DateField(("Date"), default=datetime.date.today)
-
-    med1 = models.CharField(max_length=50, default="", blank=True, null=True)
-    times1 = models.CharField(max_length=20, default="", blank=True, null=True)
-    days1 = models.CharField(max_length=20, default="", blank=True, null=True)
-    med2 = models.CharField(max_length=50, default="", blank=True, null=True)
-    times2 = models.CharField(max_length=20, default="", blank=True, null=True)
-    days2 = models.CharField(max_length=20, default="", blank=True, null=True)
-
-    # med3 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times3 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days3 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # med4 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times4 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days4 = models.CharField(max_length=20, default="", blank=True, null=True)
-
-    # med5 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times5 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days5 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # med6 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times6 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days6 = models.CharField(max_length=20, default="", blank=True, null=True)
-
-    # med7 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times7 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days7 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # med8 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times8 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days8 = models.CharField(max_length=20, default="", blank=True, null=True)
-
-    # med9 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times9 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days9 = models.CharField(max_length=20, default="", blank=True, null=True)
+    medicines_data = models.JSONField(default=list, help_text='[{"meds":"paracetamol","times":"3 times", "days":"5 days"}]')
+    
     # med10 = models.CharField(max_length=50, default="", blank=True, null=True)
     # times10 = models.CharField(max_length=20, default="", blank=True, null=True)
     # days10 = models.CharField(max_length=20, default="", blank=True, null=True)
@@ -124,3 +95,16 @@ class MedicinesModel(models.Model):
 
         verbose_name = 'MedicinesModel'
         verbose_name_plural = 'MedicinesModels'
+
+
+class TransactionModel(models.Model):
+    transaction_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE, related_name='users')
+    payment_id=models.CharField(max_length=200, verbose_name="Payment Id")
+    order_id = models.CharField(max_length=200, verbose_name="Order Id")
+    signature = models.CharField(max_length=500, verbose_name="Signature", blank=True, null=True)
+    amount = models.IntegerField(verbose_name="Amount")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
