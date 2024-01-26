@@ -165,6 +165,16 @@ def disable_appoinments_View(request):
         return HttpResponse(json.dumps(serialized_data.data))
     
 
+@csrf_exempt
+def view_results_user_view(request):
+    if request.method=="POST":
+        received_data = json.loads(request.body)
+        getUserid = received_data["userid"]
+        data = ResultsModel.objects.filter(Q(userid__exact=getUserid)).all()
+        serializer_data = ResultSerializer(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
+
+
 rz_client = RazorpayClient()
 
 @csrf_exempt

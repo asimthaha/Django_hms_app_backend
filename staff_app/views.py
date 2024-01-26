@@ -58,6 +58,19 @@ def appoinment_view(request):
         data = BookDoctorModel.objects.filter(Q(doctorid__exact=get_doctor_id)).all()
         serializer_data = BookingSerializer(data, many=True)
         return HttpResponse(json.dumps(serializer_data.data))
+    
+@csrf_exempt
+def appoinment_status_update_view(request):
+    if request.method == "PUT":
+        received_data = json.loads(request.body)
+        get_doctor_id = received_data["doctorid"]
+        get_userid = received_data["userid"]
+        get_date = received_data["date"]
+        get_status = received_data["status"]
+        data = BookDoctorModel.objects.filter(Q(userid__exact=get_userid) & Q(date__exact=get_date) & Q(doctorid__exact=get_doctor_id)).update(status=get_status)
+        return HttpResponse(json.dumps({"status":"updation Successful"}))
+    else:
+        return HttpResponse(json.dumps({"status":"updation unsuccessful"}))
 
 @csrf_exempt
 def appoinment_decline_view(request):

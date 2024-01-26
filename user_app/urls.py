@@ -11,6 +11,7 @@ urlpatterns = [
     path('predictHeart/', views.predict_heart_view, name='predictHeart'),
     path('bookDoctor/', views.appoint_doctor_view, name='bookDoctor'),
     path('disableAppoinments/', views.disable_appoinments_View, name='disableAppoinments'),
+    path('viewResultsUser/', views.view_results_user_view, name='viewResultsUser'),
    path("payment/create/", views.initiate_payment, name="razorpay-create-order-api"),
     path("payment/complete/", views.capture_payment, name="razorpay-complete-order-api"),
 ]

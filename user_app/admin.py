@@ -10,7 +10,7 @@ class UserRegistrationModelAdmin(admin.ModelAdmin):
 
 @admin.register(BookDoctorModel)
 class BookDoctorModelAdmin(admin.ModelAdmin):
-    list_display = ("bookingid","time", "date", "userid", "doctorid")
+    list_display = ("bookingid","time", "date", "userid", "doctorid","status")
     fields = ["time", "date", "userid", "doctorid"]
     list_filter = ("bookingid","time", "date", "userid", "doctorid")
     

@@ -31,6 +31,11 @@ class BookDoctorModel(models.Model):
     doctorid=models.ForeignKey(DoctorRegistrationModel, null=True, on_delete=models.CASCADE)
     time = models.CharField(max_length=20, default="")
     date= models.CharField(max_length=20, default="")
+    STATUS= (
+        ('Accept','Accept'),
+        ('Decline','Decline'),
+    )
+    status=models.CharField(max_length=50, default="", choices=STATUS)
     
 
     class Meta:
