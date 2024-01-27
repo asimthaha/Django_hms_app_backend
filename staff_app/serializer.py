@@ -7,10 +7,17 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorRegistrationModel
         # fields=(
-        #     'satffid','photo','name','username','speciality','startYear','qualification','role','password'
+        #     'staffid','photo','name','username','speciality','startYear','qualification','role','password'
         # )
         
         fields = '__all__'
+
+class DoctorSerializerV2(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorRegistrationModel
+        fields=(
+            'staffid','name'
+        )
         
         
 class BookingSerializer(serializers.ModelSerializer):
@@ -19,8 +26,14 @@ class BookingSerializer(serializers.ModelSerializer):
         model = BookDoctorModel
         fields='__all__'
 
+class BookingViewSerializer(serializers.ModelSerializer):
+    user = UserRegistrationSerializerForAppointment(source='userid', read_only=True)
+    class Meta:
+        model = BookDoctorModel
+        fields='__all__'
+
 class ViewBookingDataOfPatientsWhileSearch(serializers.ModelSerializer):
-    doctor= DoctorSerializer(source='doctorid', read_only=True)
+    doctor= DoctorSerializerV2(source='doctorid', read_only=True)
     class Meta:
         model=BookDoctorModel
         fields='__all__'
@@ -31,4 +44,6 @@ class searchPatientDataSerializer(serializers.ModelSerializer):
     medicines= MedicineSerializer(read_only=True, many=True)
     class Meta:
         model = UserRegistrationModel
-        fields='__all__'
+        fields=(
+            'userid','name', 'medicines', 'results', 'bookings'
+        )

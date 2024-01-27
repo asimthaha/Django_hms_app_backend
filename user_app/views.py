@@ -21,9 +21,9 @@ def register_view(request):
         print(serializer_data)
         if serializer_data.is_valid():
             serializer_data.save()
-            return HttpResponse(json.dumps({"status":"User data Added Successfully"}))
+            return HttpResponse(json.dumps({"status":"User data added successfully"}))
         else:
-            return HttpResponse(json.dumps({"status":"User data - Unsuccessful"}))
+            return HttpResponse(json.dumps({"status":"User data - unsuccessful"}))
 
 @csrf_exempt
 def login_view(request):
@@ -57,7 +57,7 @@ def update_userdata_view(request):
         getAddress = received_data["address"]
         data = UserRegistrationModel.objects.filter(Q(userid__exact=getUserid))
         data.update(name=getName,email= getEmail,phone=getPhone,password= getPassword, address=getAddress)
-        return HttpResponse(json.dumps({"status":"Data Updated Successfully"}))
+        return HttpResponse(json.dumps({"status":"Data updated successfully"}))
 
 @csrf_exempt        
 def bmi_calculator_view(request):
@@ -85,9 +85,9 @@ def appoint_doctor_view(request):
         print(serializer_data)
         if serializer_data.is_valid():
             serializer_data.save()
-            return HttpResponse(json.dumps({"status":"Appoinment Successful"}))
+            return HttpResponse(json.dumps({"status":"Appoinment successful"}))
         else:
-            return HttpResponse(json.dumps({"status":"Appoinment Unsuccessful"}))
+            return HttpResponse(json.dumps({"status":"Appoinment unsuccessful"}))
         
 @csrf_exempt
 def predict_heart_view(request):
@@ -159,8 +159,9 @@ def predict_heart_view(request):
 def disable_appoinments_View(request):
     if request.method == "POST":
         received_data = json.loads(request.body)
-        getDate = received_data['date']
-        data = BookDoctorModel.objects.filter(Q(date__exact=getDate)).all()
+        get_date = received_data['date']
+        get_status = received_data['status']
+        data = BookDoctorModel.objects.filter(Q(date__exact=get_date) & Q(status__exact=get_status)).all()
         serialized_data = DisableBookingsSerializer(data, many=True)
         return HttpResponse(json.dumps(serialized_data.data))
     
@@ -169,8 +170,8 @@ def disable_appoinments_View(request):
 def view_results_user_view(request):
     if request.method=="POST":
         received_data = json.loads(request.body)
-        getUserid = received_data["userid"]
-        data = ResultsModel.objects.filter(Q(userid__exact=getUserid)).all()
+        get_userid = received_data["userid"]
+        data = ResultsModel.objects.filter(Q(userid__exact=get_userid)).all()
         serializer_data = ResultSerializer(data, many=True)
         return HttpResponse(json.dumps(serializer_data.data))
 
