@@ -46,7 +46,7 @@ class BookDoctorModel(models.Model):
 class ResultsModel(models.Model):
     resultid = models.AutoField(primary_key=True)
     userid = models.ForeignKey(UserRegistrationModel, related_name='results', on_delete=models.CASCADE)
-    doctorid=models.ForeignKey(DoctorRegistrationModel, on_delete=models.CASCADE)
+    doctorid=models.ForeignKey(DoctorRegistrationModel, related_name='doctors', on_delete=models.CASCADE)
     testDate=models.DateField(blank= True, null=True)
     
     ecgpwave = models.CharField(max_length=20, blank=True,null=True, help_text="81 to 130 ms")
