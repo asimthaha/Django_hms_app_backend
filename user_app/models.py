@@ -46,7 +46,7 @@ class BookDoctorModel(models.Model):
 class ResultsModel(models.Model):
     resultid = models.AutoField(primary_key=True)
     userid = models.ForeignKey(UserRegistrationModel, related_name='results', on_delete=models.CASCADE)
-    doctorid=models.ForeignKey(DoctorRegistrationModel, on_delete=models.CASCADE)
+    doctorid=models.ForeignKey(DoctorRegistrationModel, related_name='doctors', on_delete=models.CASCADE)
     testDate=models.DateField(blank= True, null=True)
     
     ecgpwave = models.CharField(max_length=20, blank=True,null=True, help_text="81 to 130 ms")
@@ -90,10 +90,12 @@ class MedicinesModel(models.Model):
     inferences = models.CharField(max_length=200, default="", blank=True, null=True)
     date = models.DateField(("Date"), default=datetime.date.today)
     medicines_data = models.JSONField(default=list, help_text='[{"meds":"paracetamol","times":"3 times", "days":"5 days"}]')
-    
-    # med10 = models.CharField(max_length=50, default="", blank=True, null=True)
-    # times10 = models.CharField(max_length=20, default="", blank=True, null=True)
-    # days10 = models.CharField(max_length=20, default="", blank=True, null=True)
+    STATUS= (
+        ('Accept','Accept'),
+        ('Decline','Decline'),
+    )
+    med_status=models.CharField(max_length=50, default="", choices=STATUS)
+    total_rate=models.IntegerField(blank=True,null=True, help_text="Total Rate of medicine")
 
     class Meta:
         """Meta definition for MedicinesModel."""
@@ -113,3 +115,5 @@ class TransactionModel(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+

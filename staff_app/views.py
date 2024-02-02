@@ -108,6 +108,17 @@ def add_medicine_view(request):
 @csrf_exempt
 def view_medicine_pharamacist_view(request):
     if request.method=="POST":
-        data = MedicinesModel.objects.all()
+        data = MedicinesModel.objects.all().order_by('date')
         serializer_data = MedicineSerializerForViewing(data, many=True)
         return HttpResponse(json.dumps(serializer_data.data))
+    
+@csrf_exempt
+def update_medicine_pharamacist_view(request):
+    if request.method == "PUT":
+        received_data = json.loads(request.body)
+        get_medicine_id = received_data["medicineid"]
+        get_status = received_data["status"]
+        data = MedicinesModel.objects.filter(Q(medicineid__exact=get_medicine_id)).update(med_status=get_status)
+        return HttpResponse(json.dumps({"status":"Updation successful"}))
+    else:
+        return HttpResponse(json.dumps({"status":"updation unsuccessful"}))

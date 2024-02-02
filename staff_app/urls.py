@@ -11,4 +11,5 @@ urlpatterns = [
     path('appoinmentDeclineDoctor/', views.appoinment_decline_view, name='appoinmentDeclineDoctor'),
     path('addMedicineDoctor/', views.add_medicine_view, name='addMedicineDoctor'),
     path('viewMedicinePharmacist/', views.view_medicine_pharamacist_view, name='viewMedicinePharmacist'),
+    path('updateMedicinePharmacist/', views.update_medicine_pharamacist_view, name='updateMedicinePharmacist'),
 ]

@@ -160,8 +160,7 @@ def disable_appoinments_View(request):
     if request.method == "POST":
         received_data = json.loads(request.body)
         get_date = received_data['date']
-        get_status = received_data['status']
-        data = BookDoctorModel.objects.filter(Q(date__exact=get_date) & Q(status__exact=get_status)).all()
+        data = BookDoctorModel.objects.filter(Q(date__exact=get_date)).all()
         serialized_data = DisableBookingsSerializer(data, many=True)
         return HttpResponse(json.dumps(serialized_data.data))
     
@@ -172,7 +171,16 @@ def view_results_user_view(request):
         received_data = json.loads(request.body)
         get_userid = received_data["userid"]
         data = ResultsModel.objects.filter(Q(userid__exact=get_userid)).all()
-        serializer_data = ResultSerializer(data, many=True)
+        serializer_data = ResultSerializerV2(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
+    
+@csrf_exempt
+def view_medicine_user_view(request):
+    if request.method=="POST":
+        received_data = json.loads(request.body)
+        get_userid = received_data["userid"]
+        data = MedicinesModel.objects.filter(Q(userid__exact=get_userid)).all()
+        serializer_data = MedicineSerializer(data, many=True)
         return HttpResponse(json.dumps(serializer_data.data))
 
 
