@@ -1,4 +1,4 @@
-from user_app import client
+from  user_app import client
 from rest_framework.serializers import ValidationError
 from rest_framework import status
 

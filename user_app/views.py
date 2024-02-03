@@ -10,7 +10,6 @@ import numpy as np
 from .main import RazorpayClient
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.serializers import ValidationError
 
 # Create your views here.
 @csrf_exempt
@@ -187,48 +186,34 @@ def view_medicine_user_view(request):
 rz_client = RazorpayClient()
 
 @csrf_exempt
-def initiate_payment(request):
-    if request.method == 'POST':
-        try:
-            # Deserialize and validate the incoming data using the RazorpayOrderSerializer
-            data = json.loads(request.body)
-            razorpay_order_serializer = RazorpayOrderSerializer(data=data)
-            razorpay_order_serializer.is_valid(raise_exception=True)
-
-            # Get validated data
-            validated_data = razorpay_order_serializer.validated_data
-
-            amount = validated_data.get('amount', 0)
-
+def create_order_view(request):
+    if request.method == "POST":
+        razorpay_order_serializer = RazorpayOrderSerializer(
+            data=request.data
+        )
+        if razorpay_order_serializer.is_valid():
             order_response = rz_client.create_order(
-                amount=amount,
-                currency=validated_data.get("currency")
+                amount=razorpay_order_serializer.validated_data.get("amount"),
+                currency=razorpay_order_serializer.validated_data.get("currency")
             )
-
             response = {
                 "status_code": status.HTTP_201_CREATED,
                 "message": "order created",
                 "data": order_response
             }
-
-            return JsonResponse(response)
-
-        except ValidationError as ve:
-            # Handle validation errors by returning them in the response
-            response_data = {'error': ve.detail}
-            return JsonResponse(response_data, status=400)
-
-        except Exception as e:
-            # Handle other exceptions by returning an error message
-            response_data = {'error': str(e)}
-            return JsonResponse(response_data, status=500)
-
+            return Response(response, status=status.HTTP_201_CREATED)
+        else:
+            response = {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "message": "bad request",
+                "error": razorpay_order_serializer.errors
+            }
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
-def capture_payment(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        transaction_serializer = TranscationModelSerializer(data=data)
+def verify_payment_view(request):
+    if request.method == "POST":
+        transaction_serializer = TranscationModelSerializer(data=request.data)
         if transaction_serializer.is_valid():
             rz_client.verify_payment_signature(
                 razorpay_payment_id = transaction_serializer.validated_data.get("payment_id"),
