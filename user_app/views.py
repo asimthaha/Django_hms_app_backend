@@ -20,7 +20,7 @@ def register_view(request):
         print(serializer_data)
         if serializer_data.is_valid():
             serializer_data.save()
-            return HttpResponse(json.dumps({"status":"User data added successfully"}))
+            return HttpResponse(json.dumps({"status":"success"}))
         else:
             return HttpResponse(json.dumps({"status":"User data - unsuccessful"}))
 
@@ -188,8 +188,9 @@ rz_client = RazorpayClient()
 @csrf_exempt
 def create_order_view(request):
     if request.method == "POST":
+        received_data = json.loads(request.body)
         razorpay_order_serializer = RazorpayOrderSerializer(
-            data=request.data
+            data=received_data
         )
         if razorpay_order_serializer.is_valid():
             order_response = rz_client.create_order(
@@ -201,19 +202,20 @@ def create_order_view(request):
                 "message": "order created",
                 "data": order_response
             }
-            return Response(response, status=status.HTTP_201_CREATED)
+            return HttpResponse(json.dumps(response))
         else:
             response = {
                 "status_code": status.HTTP_400_BAD_REQUEST,
                 "message": "bad request",
                 "error": razorpay_order_serializer.errors
             }
-            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse(json.dumps(response))
 
 @csrf_exempt
 def verify_payment_view(request):
     if request.method == "POST":
-        transaction_serializer = TranscationModelSerializer(data=request.data)
+        received_data = json.loads(request.body)
+        transaction_serializer = TranscationModelSerializer(data=received_data)
         if transaction_serializer.is_valid():
             rz_client.verify_payment_signature(
                 razorpay_payment_id = transaction_serializer.validated_data.get("payment_id"),
@@ -225,11 +227,11 @@ def verify_payment_view(request):
                 "status_code": status.HTTP_201_CREATED,
                 "message": "transaction created"
             }
-            return Response(response, status=status.HTTP_201_CREATED)
+            return HttpResponse(json.dumps(response))
         else:
             response = {
                 "status_code": status.HTTP_400_BAD_REQUEST,
                 "message": "bad request",
                 "error": transaction_serializer.errors
             }
-            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse(json.dumps(response))

@@ -27,8 +27,8 @@ class UserRegistrationModel(models.Model):
 
 class BookDoctorModel(models.Model):
     bookingid = models.AutoField(primary_key=True)
-    userid=models.ForeignKey(UserRegistrationModel, related_name='bookings', null=True, on_delete=models.CASCADE)
-    doctorid=models.ForeignKey(DoctorRegistrationModel, null=True, on_delete=models.CASCADE)
+    userid=models.ForeignKey(UserRegistrationModel, related_name='bookings', on_delete=models.CASCADE)
+    doctorid=models.ForeignKey(DoctorRegistrationModel, on_delete=models.CASCADE)
     time = models.CharField(max_length=20, default="")
     date= models.CharField(max_length=20, default="")
     STATUS= (
