@@ -37,5 +37,5 @@ class MedicinesModelAdmin(admin.ModelAdmin):
 
 @admin.register(TransactionModel)
 class TransactionModelAdmin(admin.ModelAdmin):
-    list_display = ("transaction_id","payment_id", "order_id", "signature", "amount", 'created_at')
-    list_filter = ("amount", "payment_id", "created_at")
+    list_display = ("transaction_id", "user_id", "payment_id", "order_id", "signature", "amount", 'created_at')
+    list_filter = ("amount", "user_id", "created_at")
