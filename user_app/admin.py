@@ -22,7 +22,7 @@ class ResultsModelAdmin(admin.ModelAdmin):
 
 @admin.register(MedicinesModel)
 class MedicinesModelAdmin(admin.ModelAdmin):
-    list_display = ("medicineid", "userid", "doctorid", "inferences", 'date', 'medicines_data', 'med_status')
+    list_display = ("medicineid", "userid", "doctorid", "inferences", 'date', 'total_rate', 'med_status')
     list_filter = ("medicineid", "userid", "doctorid")
 
     fieldsets = (
