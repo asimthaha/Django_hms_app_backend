@@ -47,3 +47,8 @@ class searchPatientDataSerializer(serializers.ModelSerializer):
         fields=(
             'userid','name', 'medicines', 'results', 'bookings'
         )
+
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResultsModel
+        fields='__all__'
