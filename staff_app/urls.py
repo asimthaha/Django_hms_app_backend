@@ -12,4 +12,6 @@ urlpatterns = [
     path('addMedicineDoctor/', views.add_medicine_view, name='addMedicineDoctor'),
     path('viewMedicinePharmacist/', views.view_medicine_pharamacist_view, name='viewMedicinePharmacist'),
     path('updateMedicinePharmacist/', views.update_medicine_pharamacist_view, name='updateMedicinePharmacist'),
+    path('userData/', views.view_users_assistant_view, name='userData'),
+    path('saveResults/', views.save_results_view, name='saveResults'),
 ]

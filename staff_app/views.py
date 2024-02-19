@@ -123,3 +123,23 @@ def update_medicine_pharamacist_view(request):
         return HttpResponse(json.dumps({"status":"Updation successful"}))
     else:
         return HttpResponse(json.dumps({"status":"updation unsuccessful"}))
+
+@csrf_exempt
+def view_users_assistant_view(request):
+    if request.method=="POST":
+        users = list(UserRegistrationModel.objects.values_list('name', flat=True))
+        doctors = list(DoctorRegistrationModel.objects.filter(Q(role="Doctor")).values_list('name', flat=True))
+        return HttpResponse(json.dumps({"users":users, "doctors":doctors}))
+    else:
+        return HttpResponse(json.dumps({"status":"Retrieval unsuccessful"}))
+
+@csrf_exempt
+def save_results_view(request):
+    if request.method=="POST":
+        received_data = json.loads(request.body)
+        serializer_data = DoctorAppoinmentSerilaizer(data=received_data)
+        if serializer_data.is_valid():
+            serializer_data.save()
+            return HttpResponse(json.dumps({"status":"Saving successful"}))
+    else:
+        return HttpResponse(json.dumps({"status":"Saving unsuccessful"}))
