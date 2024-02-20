@@ -126,20 +126,33 @@ def update_medicine_pharamacist_view(request):
 
 @csrf_exempt
 def view_users_assistant_view(request):
-    if request.method=="POST":
-        users = list(UserRegistrationModel.objects.values_list('name', flat=True))
-        doctors = list(DoctorRegistrationModel.objects.filter(Q(role="Doctor")).values_list('name', flat=True))
-        return HttpResponse(json.dumps({"users":users, "doctors":doctors}))
+    if request.method=="GET":
+        users = UserRegistrationModel.objects.values_list('name', 'userid')
+        doctors = DoctorRegistrationModel.objects.filter(Q(role="Doctor")).values_list('name', 'staffid')
+
+        user_data = [{"name": name, "userid": userid} for name, userid in users]
+        doctor_data = [{"name": name, "doctorid": staffid} for name, staffid in doctors]
+
+        return JsonResponse({"users": user_data, "doctors": doctor_data}, safe=False)
     else:
         return HttpResponse(json.dumps({"status":"Retrieval unsuccessful"}))
 
 @csrf_exempt
 def save_results_view(request):
-    if request.method=="POST":
+    if request.method == "POST":
         received_data = json.loads(request.body)
-        serializer_data = DoctorAppoinmentSerilaizer(data=received_data)
+        
+        # Convert date string to datetime object
+        date_str = received_data["testDate"]
+        converted_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        received_data["testDate"] = converted_date
+
+        serializer_data = ResultSerializer(data=received_data)
+        
         if serializer_data.is_valid():
             serializer_data.save()
-            return HttpResponse(json.dumps({"status":"Saving successful"}))
-    else:
-        return HttpResponse(json.dumps({"status":"Saving unsuccessful"}))
+            return JsonResponse({"status": "Saving successful"})
+        else:
+            return JsonResponse({"status": "Saving unsuccessful", "errors": serializer_data.errors})
+
+    return JsonResponse({"status": "Invalid request method"})

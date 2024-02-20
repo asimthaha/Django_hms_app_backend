@@ -51,4 +51,4 @@ class searchPatientDataSerializer(serializers.ModelSerializer):
 class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResultsModel
-        fields='__all__'
+        fields = '__all__'

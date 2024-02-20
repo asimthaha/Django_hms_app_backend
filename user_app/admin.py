@@ -17,7 +17,7 @@ class BookDoctorModelAdmin(admin.ModelAdmin):
     
 @admin.register(ResultsModel)
 class ResultsModelAdmin(admin.ModelAdmin):
-    list_display = ("resultid", "userid", "doctorid", "testDate", "heartRate", "bloodGroup", "cholesterol", "bloodPressure")
+    list_display = ("resultid", "userid", "doctorid", "testDate", "heartRate", "bloodGroup", "cholesterol", "bloodPressure","cost")
     list_filter = ("resultid", "userid", "doctorid", "testDate")
 
 @admin.register(MedicinesModel)
