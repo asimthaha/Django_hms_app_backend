@@ -70,6 +70,7 @@ class ResultsModel(models.Model):
     cholesterol=models.IntegerField(blank=True,null=True, help_text="Cholestrol less than 200 mg/dL is normal")
     hdlcholesterol=models.IntegerField(blank=True,null=True, help_text="Good Cholestrol eg:60 normal")
     ldlcholesterol=models.IntegerField(blank=True,null=True, help_text="Bad Cholestrol eg:Under 100 normal")
+    cost = models.IntegerField(blank=True,null=True, help_text="Cost of checking")
     # uricAcid=models.FloatField(blank=True,null=True, help_text="2.5 - 7.0 milligrams per deciliter (mg/dL)")
     # serumLeucocytes=models.IntegerField(blank=True,null=True, help_text="leukocytes (adults and children >2 years) - 5000-10,000/mm")
     # whiteBloodCells=models.IntegerField(blank=True,null=True, help_text="WBCs in the blood is 4,500 to 11,000 WBCs per microliter")
