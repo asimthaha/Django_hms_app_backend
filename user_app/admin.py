@@ -22,18 +22,18 @@ class ResultsModelAdmin(admin.ModelAdmin):
 
 @admin.register(MedicinesModel)
 class MedicinesModelAdmin(admin.ModelAdmin):
-    list_display = ("medicineid", "userid", "doctorid", "inferences", 'date', 'total_rate', 'med_status')
+    list_display = ("medicineid", "userid", "doctorid", "inferences", 'date', 'total_rate')
     list_filter = ("medicineid", "userid", "doctorid")
 
     fieldsets = (
-        (None, {
-            'fields': ('userid', 'doctorid', 'inferences', 'date')
-        }),
-        ('Medicines', {
-            'fields': ('medicines_data','med_status')
-        }),
+    (None, {
+        'fields': ('userid', 'doctorid', 'inferences', 'date')
+    }),
+    ('Medicines', {
+        'fields': ('medicines_data',)  # Note the comma at the end to make it a tuple
+    }),
+)
 
-    )
 
 @admin.register(TransactionModel)
 class TransactionModelAdmin(admin.ModelAdmin):
