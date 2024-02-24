@@ -117,9 +117,8 @@ def update_medicine_pharamacist_view(request):
     if request.method == "PUT":
         received_data = json.loads(request.body)
         get_medicine_id = received_data["medicineid"]
-        get_status = received_data["status"]
         get_rate = received_data['total_rate']
-        data = MedicinesModel.objects.filter(Q(medicineid__exact=get_medicine_id)).update(med_status=get_status, total_rate=get_rate)
+        data = MedicinesModel.objects.filter(Q(medicineid__exact=get_medicine_id)).update(total_rate=get_rate)
         return HttpResponse(json.dumps({"status":"Updation successful"}))
     else:
         return HttpResponse(json.dumps({"status":"updation unsuccessful"}))

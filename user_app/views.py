@@ -184,7 +184,6 @@ def view_medicine_user_view(request):
 
 
 rz_client = RazorpayClient()
-
 @csrf_exempt
 def create_order_view(request):
     if request.method == "POST":
