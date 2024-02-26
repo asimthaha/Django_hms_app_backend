@@ -14,4 +14,5 @@ urlpatterns = [
     path('updateMedicinePharmacist/', views.update_medicine_pharamacist_view, name='updateMedicinePharmacist'),
     path('userData/', views.view_users_assistant_view, name='userData'),
     path('saveResults/', views.save_results_view, name='saveResults'),
+    path('addNotifications/', views.add_notifications_view, name='addNotifications'),
 ]

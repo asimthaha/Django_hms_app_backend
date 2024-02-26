@@ -52,3 +52,9 @@ class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResultsModel
         fields = '__all__'
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= NotificationsModel
+        fields = '__all__'

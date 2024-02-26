@@ -4,6 +4,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from user_app.models import *
 from user_app.serializer import *
+from staff_app.serializer import *
 from django.db.models import Q
 import joblib
 import numpy as np
@@ -181,7 +182,28 @@ def view_medicine_user_view(request):
         data = MedicinesModel.objects.filter(Q(userid__exact=get_userid)).all()
         serializer_data = MedicineSerializer(data, many=True)
         return HttpResponse(json.dumps(serializer_data.data))
+    
+@csrf_exempt
+def view_notifications_user_view(request):
+    if request.method=="POST":
+        received_data = json.loads(request.body)
+        get_userid = received_data["userid"]
+        data = NotificationsModel.objects.filter(Q(user_id__exact=get_userid)).order_by('noti_status').all().all()
+        serializer_data = NotificationSerializer(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
 
+@csrf_exempt
+def update_notifications_user_view(request):
+    if request.method=="PUT":
+        received_data = json.loads(request.body)
+        get_id = received_data["notificationid"]
+        get_userid = received_data["userid"]
+        get_status= received_data["status"]
+        data = NotificationsModel.objects.filter(Q(user_id__exact=get_userid) & Q(notification_id__exact=get_id))
+        data.update(noti_status=get_status)
+        return HttpResponse(json.dumps({"status":"Data updated successfully"}))
+    else:
+        return HttpResponse(json.dumps({"status":"Data updation unsuccessful"}))
 
 rz_client = RazorpayClient()
 @csrf_exempt
