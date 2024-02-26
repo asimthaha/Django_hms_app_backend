@@ -112,3 +112,9 @@ class TransactionModel(models.Model):
     def __str__(self):
         return str(self.id)
 
+
+class NotificationsModel(models.Model):
+    notification_id = models.AutoField(primary_key=True)
+    user_id=models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
+    noti_status=models.BooleanField(blank=True, null=True)
+    message=models.CharField(max_length=50, default="", blank=True,null=True, help_text="message for the user")

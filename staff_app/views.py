@@ -155,3 +155,17 @@ def save_results_view(request):
             return JsonResponse({"status": "Saving unsuccessful", "errors": serializer_data.errors})
 
     return JsonResponse({"status": "Invalid request method"})
+
+
+@csrf_exempt
+def add_notifications_view(request):
+    if request.method == "POST":
+        received_data = json.loads(request.body)
+        serializer_data = NotificationSerializer(data=received_data)
+        if serializer_data.is_valid():
+            serializer_data.save()
+            return JsonResponse({"status": "Saving successful"})
+        else:
+            return JsonResponse({"status": "Saving unsuccessful", "errors": serializer_data.errors})
+
+    return JsonResponse({"status": "Invalid request method"})

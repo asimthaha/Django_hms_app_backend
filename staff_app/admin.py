@@ -1,6 +1,7 @@
 # Register your models here.
 from django.contrib import admin
 from .models import *
+from user_app.models import *
 
 
 
@@ -23,3 +24,9 @@ class DoctorRegistrationModelAdmin(admin.ModelAdmin):
 #     list_display = ("photo", "card_title", "card_description")
 #     fields = ["photo", "card_title", "card_description"]
 #     list_filter = ("card_title", "photo")
+    
+@admin.register(NotificationsModel)
+class NotificationsModelAdmin(admin.ModelAdmin):
+    list_display = ('notification_id', 'user_id', 'noti_status', 'message')
+    list_filter = ('notification_id', 'noti_status')
+    search_fields = ('notification_id', 'noti_status', 'user_id')
