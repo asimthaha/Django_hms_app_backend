@@ -74,20 +74,21 @@ def bmi_calculator_view(request):
             status = 'Overweight'
         else:
             status = 'Obese'
-            
-        return HttpResponse(json.dumps({"result":bmi, "status":status}))
-    
-@csrf_exempt
-def appoint_doctor_view(request):
-    if request.method=="POST":
-        data = json.loads(request.body)
-        serializer_data = DoctorAppoinmentSerilaizer(data=data)
+        serializer_data = BmiSerializer(data=data)
         print(serializer_data)
         if serializer_data.is_valid():
             serializer_data.save()
-            return HttpResponse(json.dumps({"status":"Appoinment successful"}))
-        else:
-            return HttpResponse(json.dumps({"status":"Appoinment unsuccessful"}))
+        return HttpResponse(json.dumps({"result":bmi, "status":status}))
+    
+@csrf_exempt        
+def bmi_analytics_view(request):
+    if request.method == "POST":
+        received_data = json.loads(request.body)
+        get_userid = received_data["userid"]
+        data = BmiModel.objects.filter(Q(user_id__exact=get_userid)).all()
+        serializer_data = BmiSerializer(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
+    
         
 @csrf_exempt
 def predict_heart_view(request):
@@ -96,7 +97,6 @@ def predict_heart_view(request):
 
     if request.method == 'POST':
         data = json.loads(request.body)
-        
         
         input_features = [
             float(data.get('age')),
@@ -113,6 +113,11 @@ def predict_heart_view(request):
             float(data.get('ca')),
             float(data.get('thal'))
         ]
+
+        serializer_data = PredictionSerializer(data=data)
+        print(serializer_data)
+        if serializer_data.is_valid():
+            serializer_data.save()
 
         # Convert input_features to a NumPy array and reshape it
         input_data = np.array(input_features).reshape(1, -1)
@@ -155,6 +160,27 @@ def predict_heart_view(request):
             'youtube_links': youtube_links[links_category]
         }))
     
+@csrf_exempt        
+def prediction_analytics_view(request):
+    if request.method == "POST":
+        received_data = json.loads(request.body)
+        get_userid = received_data["userid"]
+        data = PredictionModel.objects.filter(Q(user_id__exact=get_userid)).all()
+        serializer_data = PredictionSerializer(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
+
+@csrf_exempt
+def appoint_doctor_view(request):
+    if request.method=="POST":
+        data = json.loads(request.body)
+        serializer_data = DoctorAppoinmentSerilaizer(data=data)
+        print(serializer_data)
+        if serializer_data.is_valid():
+            serializer_data.save()
+            return HttpResponse(json.dumps({"status":"Appoinment successful"}))
+        else:
+            return HttpResponse(json.dumps({"status":"Appoinment unsuccessful"}))    
+        
 @csrf_exempt
 def disable_appoinments_View(request):
     if request.method == "POST":
@@ -162,8 +188,7 @@ def disable_appoinments_View(request):
         get_date = received_data['date']
         data = BookDoctorModel.objects.filter(Q(date__exact=get_date)).all()
         serialized_data = DisableBookingsSerializer(data, many=True)
-        return HttpResponse(json.dumps(serialized_data.data))
-    
+        return HttpResponse(json.dumps(serialized_data.data))   
 
 @csrf_exempt
 def view_results_user_view(request):

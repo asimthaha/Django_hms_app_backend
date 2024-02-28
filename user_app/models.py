@@ -118,3 +118,27 @@ class NotificationsModel(models.Model):
     user_id=models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
     noti_status=models.BooleanField(blank=True, null=True)
     message=models.CharField(max_length=50, default="", blank=True,null=True, help_text="message for the user")
+
+
+class PredictionModel(models.Model):
+    prediction_id = models.AutoField(primary_key=True)
+    user_id=models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
+    age=models.FloatField(blank=True,null=True)
+    sex=models.FloatField(blank=True,null=True)
+    cp=models.FloatField(blank=True,null=True)
+    trestbps=models.FloatField(blank=True,null=True)
+    chol=models.FloatField(blank=True,null=True)
+    fbs=models.FloatField(blank=True,null=True)
+    restecg=models.FloatField(blank=True,null=True)
+    thalach=models.FloatField(blank=True,null=True)
+    exang=models.FloatField(blank=True,null=True)
+    oldpeak=models.FloatField(blank=True,null=True)
+    slope=models.FloatField(blank=True,null=True)
+    ca=models.FloatField(blank=True,null=True)
+    thal=models.FloatField(blank=True,null=True)
+
+class BmiModel(models.Model):
+    bmi_id = models.AutoField(primary_key=True)
+    user_id=models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
+    weight=models.FloatField(blank=True,null=True)
+    height=models.FloatField(blank=True,null=True)

@@ -39,3 +39,14 @@ class MedicinesModelAdmin(admin.ModelAdmin):
 class TransactionModelAdmin(admin.ModelAdmin):
     list_display = ("transaction_id", "user_id", "payment_id", "order_id", "signature", "amount", 'created_at')
     list_filter = ("amount", "user_id", "created_at")
+
+
+@admin.register(PredictionModel)
+class PredictionModelAdmin(admin.ModelAdmin):
+    list_display = ("prediction_id", "user_id", "age", "sex", "cp", "trestbps", "fbs", "restecg","thalach")
+    search_fields = ('prediction_id', 'age')
+
+@admin.register(BmiModel)
+class BmiModelAdmin(admin.ModelAdmin):
+    list_display = ("bmi_id", "user_id", "weight", "height")
+    search_fields = ('bmi_id', 'user_id')
