@@ -58,3 +58,13 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model= NotificationsModel
         fields = '__all__'
+
+class PredictionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= PredictionModel
+        fields = '__all__'
+
+class BmiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= BmiModel
+        fields = '__all__'
