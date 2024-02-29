@@ -136,9 +136,11 @@ class PredictionModel(models.Model):
     slope=models.FloatField(blank=True,null=True)
     ca=models.FloatField(blank=True,null=True)
     thal=models.FloatField(blank=True,null=True)
+    created_at = models.DateField(auto_now_add=True)
 
 class BmiModel(models.Model):
     bmi_id = models.AutoField(primary_key=True)
     user_id=models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
     weight=models.FloatField(blank=True,null=True)
     height=models.FloatField(blank=True,null=True)
+    created_at = models.DateField(auto_now_add=True)

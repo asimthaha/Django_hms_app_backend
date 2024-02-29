@@ -43,10 +43,10 @@ class TransactionModelAdmin(admin.ModelAdmin):
 
 @admin.register(PredictionModel)
 class PredictionModelAdmin(admin.ModelAdmin):
-    list_display = ("prediction_id", "user_id", "age", "sex", "cp", "trestbps", "fbs", "restecg","thalach")
+    list_display = ("prediction_id", "user_id", "age", "sex", "cp", "trestbps", "fbs", "restecg","thalach", "created_at")
     search_fields = ('prediction_id', 'age')
 
 @admin.register(BmiModel)
 class BmiModelAdmin(admin.ModelAdmin):
-    list_display = ("bmi_id", "user_id", "weight", "height")
+    list_display = ("bmi_id", "user_id", "weight", "height", "created_at")
     search_fields = ('bmi_id', 'user_id')
