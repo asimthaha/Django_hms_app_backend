@@ -68,3 +68,9 @@ class BmiSerializer(serializers.ModelSerializer):
     class Meta:
         model= BmiModel
         fields = '__all__'
+
+class TransactionSerializer(serializers.ModelSerializer):
+    user = UserRegistrationSerializer(source='user_id', read_only=True)
+    class Meta:
+        model= TransactionModel
+        fields = '__all__'

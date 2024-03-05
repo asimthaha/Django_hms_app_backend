@@ -71,10 +71,6 @@ class ResultsModel(models.Model):
     hdlcholesterol=models.IntegerField(blank=True,null=True, help_text="Good Cholestrol eg:60 normal")
     ldlcholesterol=models.IntegerField(blank=True,null=True, help_text="Bad Cholestrol eg:Under 100 normal")
     cost = models.IntegerField(blank=True,null=True, help_text="Cost of checking")
-    # uricAcid=models.FloatField(blank=True,null=True, help_text="2.5 - 7.0 milligrams per deciliter (mg/dL)")
-    # serumLeucocytes=models.IntegerField(blank=True,null=True, help_text="leukocytes (adults and children >2 years) - 5000-10,000/mm")
-    # whiteBloodCells=models.IntegerField(blank=True,null=True, help_text="WBCs in the blood is 4,500 to 11,000 WBCs per microliter")
-    # redBloodCells=models.IntegerField(blank=True,null=True, help_text="RBC 4.35 to 5.65 (mcL)")
     
     class Meta:
         verbose_name = ("ResultsModel")

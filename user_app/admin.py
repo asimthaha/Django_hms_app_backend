@@ -27,7 +27,7 @@ class MedicinesModelAdmin(admin.ModelAdmin):
 
     fieldsets = (
     (None, {
-        'fields': ('userid', 'doctorid', 'inferences', 'date')
+        'fields': ('userid', 'doctorid', 'inferences', 'date', 'total_rate')
     }),
     ('Medicines', {
         'fields': ('medicines_data',)  # Note the comma at the end to make it a tuple

@@ -10,8 +10,18 @@ from staff_app.serializer import *
 from django.db.models import Q
 from datetime import datetime
 
-
-# Create your views here.
+@csrf_exempt
+def register_staff_view(request):
+    if request.method=="POST":
+        data = json.loads(request.body)
+        serializer_data = DoctorSerializer(data=data)
+        print(serializer_data)
+        if serializer_data.is_valid():
+            serializer_data.save()
+            return HttpResponse(json.dumps({"status":"staff data - success"}))
+        else:
+            return HttpResponse(json.dumps({"status":"staff data - unsuccessful"}))
+        
 @csrf_exempt
 def login_view(request):
     if request.method == "POST":
@@ -169,3 +179,11 @@ def add_notifications_view(request):
             return JsonResponse({"status": "Saving unsuccessful", "errors": serializer_data.errors})
 
     return JsonResponse({"status": "Invalid request method"})
+
+@csrf_exempt
+def view_payments_pharamacist_view(request):
+    if request.method=="POST":
+        data = TransactionModel.objects.all()
+        serializer_data = TransactionSerializer(data, many=True)
+        return HttpResponse(json.dumps(serializer_data.data))
+    
