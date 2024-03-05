@@ -261,6 +261,7 @@ def create_order_view(request):
 def verify_payment_view(request):
     if request.method == "POST":
         received_data = json.loads(request.body)
+        print(received_data)
         transaction_serializer = TranscationModelSerializer(data=received_data)
         if transaction_serializer.is_valid():
             rz_client.verify_payment_signature(
