@@ -186,7 +186,8 @@ def disable_appoinments_View(request):
     if request.method == "POST":
         received_data = json.loads(request.body)
         get_date = received_data['date']
-        data = BookDoctorModel.objects.filter(Q(date__exact=get_date)).all()
+        get_doctor_id= received_data['staffid']
+        data = BookDoctorModel.objects.filter(Q(date__exact=get_date)&Q(doctorid__exact=get_doctor_id)).all()
         serialized_data = DisableBookingsSerializer(data, many=True)
         return HttpResponse(json.dumps(serialized_data.data))   
 
