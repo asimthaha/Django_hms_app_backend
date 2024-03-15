@@ -82,11 +82,18 @@ WSGI_APPLICATION = 'hms_backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+'default': {
+'ENGINE': 'djongo',
+"CLIENT": {
+"name": "CardioCare_db",
+"host": "mongodb+srv://asimthaha:asimthaha123@cluster0.nnbhz73.mongodb.net/?retryWrites=true&w=majority",
+"username": "asimthaha",
+"password": "asimthaha123",
+"authMechanism": "SCRAM-SHA-1",
+},
+ }
 }
+
 
 
 
